@@ -1,0 +1,101 @@
+{% extends "users/base.html" %}
+
+{% block content %}
+  
+ <div class="conta"></div>
+ <div class="container">
+    <div class="row justify-content-center">
+        <div class="col-xl-10 col-lg-12 col-md-9">
+            <div class="card o-hidden border-0 shadow-lg my-5">
+                <div class="card-body p-0">
+                    <div class="row">
+                        <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+                        <div class="col-lg-6">
+                            <div class="p-3">
+                                <div class="text-center">
+                                    <h1 class="h4 text-gray-900 mb-4">Payment Details</h1>
+                                </div>
+                              
+                                <div class="container">
+                                    <form id="submitcheckout" action="https://v3-uat.jengapgw.io/processPayment" method="POST" class="text-center">   
+                                        <div class="form-group">
+                                            <input type="hidden" class="form-control" id="merchantCode" name="merchantCode" name="token" value="{{ access_token }}">
+                                          </div>
+
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="merchantCode" name="merchantCode" value="{{ merchantCode }}">
+                                          </div>
+                                        
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="orderAmount" name="orderAmount" value=1>
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="orderReference" name="orderReference" value="fggg">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="prodtype" name="productType" value="gsg c c">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="productDescription" name="productDescription" value="proddes">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="paymentTimeLimit" name="paymentTimeLimit">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <input type="text" id="customerFirstName" class="form-control" name="customerFirstName" value="{{ name }}" placeholder="Enter Your First Name">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="text" class="form-control" type="text" id="customerLastName" name="customerLastName" value="{{ lastname }}">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <input type="text" id="customerPostalCodeZip" class="form-control" name="customerPostalCodeZip" placeholder="Enter postal code">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="merchantCode" name="merchantCode" value="{{ merchantCode }}" placeholder="">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <input type="text" id="customerAddress" class="form-control" name="customerAddress" placeholder="Enter address">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <input type="email" id="customerEmail" class="form-control" name="customerEmail" value="{{ email }}" placeholder="Enter your email">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <input type="tel" id="customerPhone" class="form-control" name="customerPhone" placeholder="Enter your phone number">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" type="text" id="extraData" name="extraData" value="extradata">
+                                          </div>
+                                          <div class="form-group">
+                                            <input type="hidden" class="form-control" id="callbackUrl" name="callbackUrl" value="{{ success_url }}">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <select id="country_code" name="country_code" class="form-control">
+                                                {% for code in country_codes %}
+                                                    <option value="{{ code }}">{{ code }}</option>
+                                                {% endfor %}
+                                            </select>
+                                          </div>
+                                          <div class="form-group">
+                                            <input class="form-control" type="hidden" id="signature" name="signature" value="merchantCode+orderReference+currency+orderAmount+callbackUrl">
+                                          </div>
+                                          <div class="form-group my-3">
+                                            <select id="currency" name="currency" class="form-control" aria-placeholder="Select Currency">
+                                                <option value="option-1">KES</option>
+                                                <option value="option-2">USD</option>
+                                              </select>
+                                          </div>
+                                          <button type="submit" class="btn btn-success">proceed</button>
+                                   </form>
+                                 
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+  
+{% endblock %}
