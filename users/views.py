@@ -20,6 +20,11 @@ from django.contrib.auth.decorators import login_required
 from .forms import PasswordResetForm
 from django.db.models.query_utils import Q
 from .forms import SetPasswordForm
+from django.contrib.auth.forms import AuthenticationForm
+from .decorators import user_not_authenticated
+
+from django.contrib.auth import logout
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
@@ -57,8 +62,7 @@ def activateEmail(request, user, to_email):
     })
     email = EmailMessage(mail_subject, message, to=[to_email])
     if email.send():
-        messages.success(request, f'Hello {user} , please go to you email {to_email} inbox or check your spam folder and click on \
-            received activation link from African Genetic Biocontrol consortium to confirm and complete the registration.')
+        messages.success(request, f'Hello {user} , please go to you email {to_email} inbox or check your spam folder for email confirmation and complete the registration.')
     else:
         messages.error(request, f'If you did not receive the email, Please confirm that {to_email} this is your actual mail')
 
@@ -81,28 +85,48 @@ def activate(request, uidb64, token):
     
     return redirect('login')
 
-def login_view(request):
+def customized_login(request):
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
-        remember_me = request.POST.get('remember_me', None)
-
-        user = authenticate(request, username=username, password=password)
-
-        if user is not None:
-            login(request, user)
+        valuenext= request.POST.get('next')
+        form = AuthenticationForm(request=request, data=request.POST)
+        if form.is_valid():
+            user = authenticate(
+                username=form.cleaned_data['username'],
+                password=form.cleaned_data['password'],
+            )
+            if user is not None and valuenext == '':
+                login(request, user)
+                messages.success(request, f"You have been logged in as {user.username}")
+                return redirect('home')
             
-            if remember_me:
-                request.session.set_expiry(settings.SESSION_COOKIE_AGE)
+            if user is not None and valuenext!='':
+                login(request, user)
+                context= {'form': form, 'valuenext': valuenext}
+
+                messages.success(request, f"Hello {user.username} You have been logged in")
+                return redirect(valuenext)
+
             else:
-                request.session.set_expiry(0)
+                for error in list(form.errors.values()):
+                    messages.error(request, error) 
+       
 
-            return redirect('home')
-        else:
-            # Handle invalid login
-            pass
+    form = AuthenticationForm() 
+    
+    return render(
+        request=request,template_name="users/login.html", context={'form': form}
+        )
 
-    return render(request, 'users/login.html')
+
+
+@login_required
+def customized_logout(request):
+    logout(request)
+    messages.info(request, "Logged out, You may log in again")
+    return redirect("login")
+
+
+
 
 @login_required
 def profile(request, username):
@@ -145,6 +169,7 @@ def password_change(request):
 def password_reset_request(request):
     if request.method == 'POST':
         form = PasswordResetForm(request.POST)
+        
         if form.is_valid():
             user_email = form.cleaned_data['email']
             associated_user = get_user_model().objects.filter(Q(email=user_email)).first()

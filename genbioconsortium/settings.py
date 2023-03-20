@@ -154,16 +154,17 @@ STATICFILES_DIRS = [
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_REDIRECT_URL = 'home'
+LOGIN_URL = 'login'
+LOGIN_REDIRECT_URL = 'profile'
 LOGOUT_REDIRECT_URL = 'login'
 
 
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'nelson.masibo@kenyaweb.com'
-EMAIL_HOST_USER = 'kenyawebtest@gmail.com'
-EMAIL_HOST_PASSWORD = 'gzzzrzcczrlnnwaj'
+EMAIL_FROM = 'kenyawebtest@gmail.com'
+EMAIL_HOST_USER = 'kenyawebapps87@gmail.com'
+EMAIL_HOST_PASSWORD = 'pzjotxvpakzrzlhi'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 

@@ -1,6 +1,7 @@
 import requests
 from django.shortcuts import render, redirect
 from django.urls import reverse
+from django.contrib.auth.decorators import login_required
 import json
 from django.http import HttpResponse
 import requests
@@ -10,6 +11,8 @@ from base64 import b64encode
 from genbioconsortium.settings import consumer_key, consumer_secret
 import datetime
 from django.views.decorators.csrf import csrf_exempt
+from .decorators import user_not_authenticated
+
 timestamp = datetime.datetime.now().strftime("%Y%m%d%H%M%S")
 shortcode = 174379
 
@@ -18,11 +21,7 @@ shortcode = 174379
 
 
 
-
-
-
-
-
+@login_required
 def index(request):
     if request.method == 'POST':
         # Get form data
