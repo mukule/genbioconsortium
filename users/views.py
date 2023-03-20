@@ -22,9 +22,10 @@ from django.db.models.query_utils import Q
 from .forms import SetPasswordForm
 from django.contrib.auth.forms import AuthenticationForm
 from .decorators import user_not_authenticated
-
+from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
+from django.utils.html import strip_tags
 
 
 # Create your views here.
@@ -174,23 +175,22 @@ def password_reset_request(request):
             user_email = form.cleaned_data['email']
             associated_user = get_user_model().objects.filter(Q(email=user_email)).first()
             if associated_user:
-                subject = "Password Reset request"
-                message = render_to_string("users/template_reset_password.html", {
-                    'user': associated_user,
-                    'domain': get_current_site(request).domain,
-                    'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
-                    'token': account_activation_token.make_token(associated_user),
-                    "protocol": 'https' if request.is_secure() else 'http'
-                })
-                email = EmailMessage(subject, message, to=[associated_user.email])
-                if email.send():
-                    messages.success(request,
-                        """
-                       Password reset has been emailed to you please check your mail
-                        """
-                    )
-                else:
-                    messages.error(request, "Problem sending reset password email, <b>An authentic error occurred/b>")
+               subject = "Password Reset request"
+               html_message = render_to_string("users/template_reset_password.html", {
+                   'user': associated_user,
+                   'domain': get_current_site(request).domain,
+                   'uid': urlsafe_base64_encode(force_bytes(associated_user.pk)),
+                   'token': account_activation_token.make_token(associated_user),
+                   "protocol": 'https' if request.is_secure() else 'http'
+                   })
+               plain_message = strip_tags(html_message)
+               email = EmailMultiAlternatives(subject, plain_message, to=[associated_user.email])
+               email.attach_alternative(html_message, "text/html")
+               email.send()
+               if email.send():
+                messages.success(request,"""Password reset has been emailed to you please check your mail""")
+            else:
+                messages.error(request, "Problem sending reset password email, <b>An authentic error occurred/b>")
 
             return redirect('home')
 
@@ -218,14 +218,14 @@ def passwordResetConfirm(request, uidb64, token):
             form = SetPasswordForm(user, request.POST)
             if form.is_valid():
                 form.save()
-                messages.success(request, "Your password has been set. You may go ahead and <b>log in </b> now.")
-                return redirect('homepage')
+                messages.success(request, "Your password has been set. You may now login")
+                return redirect('login')
             else:
                 for error in list(form.errors.values()):
                     messages.error(request, error)
 
         form = SetPasswordForm(user)
-        return render(request, 'home/password_reset_confirm.html', {'form': form})
+        return render(request, 'users/password_reset_confirm.html', {'form': form})
     else:
         messages.error(request, "Link is expired")
 
