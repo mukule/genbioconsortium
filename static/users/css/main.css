@@ -22,22 +22,12 @@
     border-radius: 0.35rem;
 }
 
-.btn-success {
-    width: 100%;
-    border-radius: 68%;
-}
+
 
 form {
     display: block;
     margin-top: 0em;
 }
-
-form.user .form-control-user {
-    font-size: .8rem;
-    border-radius: 10rem;
-    padding: 1.5rem 1rem;
-}
-
 .form-control {
     transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
     transition-property: border-color,box-shadow;
@@ -45,46 +35,12 @@ form.user .form-control-user {
     transition-timing-function: ease-in-out,ease-in-out;
     transition-delay: 0s,0s;
     color: #2d3748;
-    height: 40px;
+    height: 50px;
+    text-align: center; /* Center-align text in the input fields */
+    margin-bottom: 0.5rem;
 }
 
-form-control {
-    display: block;
-    width: 100%;
-    height: calc(1.5em + 0.75rem + 2px);
-    padding: 0.375rem 0.75rem;
-    font-size: .875rem;
-    font-weight: 400;
-    line-height: 1.5;
-    color: #4a5568;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid #cbd5e0;
-    border-radius: 0.35rem;
-    transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-}
 
-input {
-    writing-mode: horizontal-tb !important;
-    letter-spacing: normal;
-    word-spacing: normal;
-    line-height: normal;
-    text-transform: none;
-    text-indent: 0px;
-    text-shadow: none;
-    display: inline-block;
-    text-align: start;
-    appearance: auto;
-    -webkit-rtl-ordering: logical;
-    cursor: text;
-    background-color: field;
-    margin: 0em;
-    padding: 1px 2px;
-    border-width: 2px;
-    border-style: inset;
-    border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
-    border-image: initial;
-}
 
 ::after, ::before {
     box-sizing: border-box;
@@ -94,16 +50,189 @@ body {
     font-family: Sans-Serif;
   }
   
-  #start-payment-button {
-      cursor: pointer;
-      position: relative;
-      background-color: blueviolet;
-      color: #fff;
-      max-width: 30%;
-      padding: 10px;
-      font-weight: 600;
-      font-size: 14px;
-      border-radius: 10px;
-      border: none;
-      transition: all .1s ease-in;
+  
+  input[type="text"].form-control,
+    input[type="email"].form-control,
+    input[type="password"].form-control {
+        text-align: center;
+        border-radius: 50px;
+        border: 1px solid #ccc; /* Add a border to the input fields */
+        padding: 8px; /* Add some padding to the input fields */
+        width: 100%; /* Make the input fields fill the entire width of their container */
+        box-sizing: border-box; /* Include the padding and border in the input field's width */
+    }
+    
+    input[type="text"].form-control:focus,
+    input[type="email"].form-control:focus,
+    input[type="password"].form-control:focus {
+        outline: none; /* Remove the outline when the input field is in focus */
+    }
+
+    .btn-success {
+       
+        padding: 8px; /* Add some padding to the input fields */
+        width: 100%; /* Make the input fields fill the entire width of their container */
+        box-sizing: border-box; /* Include the padding and border in the input field's width */
+        color: #fff;
+        padding: 8px 16px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out, border-color 0.3s ease-in-out;
+        border-radius: 50px;
+        height: 50px;
+        
+    }
+    
+    .btn-success:hover,
+    .btn-success:focus {
+        background-color: #218838;
+        border-color: #1e7e34;
+        color: #fff;
+        text-decoration: none;
+    }
+    .form-group button.btn-success {
+        border-radius: 50px !important;
+    }
+
+    .form-group .no-style-link {
+        color: inherit;
+        text-decoration: none;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+    /* Style the dropdown menu */
+.dropdown-menu {
+    background-color: #fff;
+    border-radius: 5px;
+    border: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    min-width: 100px;
   }
+  
+  /* Style the links inside the dropdown menu */
+  .dropdown-menu a {
+    color: #000;
+    font-size: 14px;
+    text-decoration: none;
+    display: block;
+    padding: 5px 10px;
+  }
+  
+  /* Add a hover effect to the links inside the dropdown menu */
+  .dropdown-menu a:hover {
+    background-color: #f7f7f7;
+  }
+  
+  /* Style the dropdown toggle button */
+  .dropdown-toggle {
+    background-color: #fff;
+    border-radius: 5px;
+    border: none;
+    color: #000;
+    font-weight: bold;
+    padding: 10px;
+    transition: background-color 0.3s ease;
+  }
+  
+  /* Add a hover effect to the dropdown toggle button */
+  .dropdown-toggle:hover {
+    background-color: #f7f7f7;
+  }
+  #header-links:first-child {
+    margin-right: 1rem;
+  }
+
+  @media screen and (max-width: 991px) {
+    #header-links {
+      margin-right: 0.5rem;
+    }
+  }
+  
+  #navbarNav li {
+    display: inline-block;
+  }
+
+  .custom-btn-style {
+    background-color: #174D4D !important; /* Replace with your desired color */
+    border-radius: 30px !important; /* Replace with your desired border radius */
+    color: white; /* Set the text color to white */
+    padding: 8px 20px; /* Adjust the padding as needed */
+  }
+ 
+  .header-section {
+    background: url("/static/users/images/bg-welcome.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+  }
+  
+  .header-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+  }
+  
+  .header-section:before {
+    filter: brightness(0.2);
+  }
+  
+  @media (max-width: 991px) {
+    .header-section {
+      height: 200px;
+    }
+  }
+  
+  @media (max-width: 767px) {
+    .header-section {
+      height: 300px;
+    }
+  }
+
+  .welcome-section {
+    padding: 50px 0;
+    background-color: #f8f9fa;
+  }
+  
+  .welcome-section h1, .welcome-section h3, .welcome-section h4 {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .welcome-section p {
+    font-size: 18px;
+    line-height: 28px;
+  }
+  
+  .welcome-section .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+  }
+  
+  .welcome-section .btn-secondary {
+    background-color: #fff;
+    border-color: #007bff;
+    color: #007bff;
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
