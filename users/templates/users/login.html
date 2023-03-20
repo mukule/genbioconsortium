@@ -23,9 +23,11 @@
                                         <div class="form-group">
                                             {{ form.password|as_crispy_field }}
                                         </div>
+                                        
                                         <div class="form-group">
                                             <input type="checkbox" name="remember_me">Remember Me
                                         </div>
+                                        <input type="hidden" name="next" value="{{ request.GET.next }}"/>
                                         <div class="form-group my-3" id="signup-button">
                                             <button class="btn btn-success">Sign in</button>
                                         </div>
