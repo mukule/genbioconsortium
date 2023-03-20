@@ -29,9 +29,9 @@ import os
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['102.216.119.2', 'soft01.kenyaweb.com']
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -46,11 +46,12 @@ INSTALLED_APPS = [
     #add the user app
     'users',
     'crispy_forms',
-    # 'crispy_bootstrap4',
+    'crispy_bootstrap4',
     'django_daraja',
     #'django_daraja',
     'payment',
     'django_bootstrap_icons',
+    'captcha',
     
 
 ]
@@ -97,6 +98,7 @@ DATABASES = {
         'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '3306',
+        
     }
 }
 
@@ -137,9 +139,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL='/static/'
-STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
+# STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
+#Remove this line before production
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static/'),
+]
 
 
 # Default primary key field type
@@ -148,14 +154,14 @@ MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-LOGIN_REDIRECT_URL = 'register'
+LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'login'
 
 
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'kenyawebtest@gmail.com'
+EMAIL_FROM = 'nelson.masibo@kenyaweb.com'
 EMAIL_HOST_USER = 'kenyawebtest@gmail.com'
 EMAIL_HOST_PASSWORD = 'gzzzrzcczrlnnwaj'
 EMAIL_PORT = 587
@@ -163,16 +169,19 @@ EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
 
-#mpesa payments
 
-# consumer_key = "piumJBdCtSxo6GX9p8j8kqcljVJNXJMA"
-# consumer_secret = " pd7cx9QgbZReJdZ1"
-# api_url = "https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials"
-# passkey = "bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919"
-# short_code = 174379
-# endpoint = "https://sandbox.safaricom.co.ke/mpesa/stkpush/v1/processrequest"
-merchantCode = 8799393481
-consumerSecret = "fn55Wlh6N3lN5HFr6US4liqK3N0N1u"
+#mpesa payment details
+consumer_key = "piumJBdCtSxo6GX9p8j8kqcljVJNXJMA"
+consumer_secret = "pd7cx9QgbZReJdZ1"
+
+
+
+
+
+
+RECAPTCHA_PUBLIC_KEY = '6LcV3RQlAAAAANRWtvANODusNIRKJg61r8PR-uK-'
+RECAPTCHA_PRIVATE_KEY = '6LcV3RQlAAAAADkIkGLs9X2Gb5Z7hK3y7Ayd7lQ-'
+SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 
 
