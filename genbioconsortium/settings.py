@@ -29,9 +29,9 @@ import os
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
-ALLOWED_HOSTS = ['102.216.119.2', 'soft01.kenyaweb.com']
+ALLOWED_HOSTS = ['102.216.119.2', 'python.kenyaweb.com']
 
 
 # Application definition
@@ -92,11 +92,11 @@ WSGI_APPLICATION = 'genbioconsortium.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bioconsortium',
-        'USER': 'root',
-        'PASSWORD': '',
+        'NAME': 'soft01v_bio',
+        'USER': 'soft01v_neslon',
+        'PASSWORD': 'Neilah@1',
         'HOST': 'localhost',
-        'PORT': '3306',
+        'PORT': '2700',
     }
 }
 
