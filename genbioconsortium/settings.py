@@ -55,10 +55,6 @@ INSTALLED_APPS = [
     'payment',
     'django_bootstrap_icons',
     'captcha',
-    'paypal.standard.ipn',
-    
-    
-  
     
 
 ]
@@ -181,11 +177,8 @@ PASSWORD_RESET_TIMEOUT = 14400
 consumer_key = "piumJBdCtSxo6GX9p8j8kqcljVJNXJMA"
 consumer_secret = "pd7cx9QgbZReJdZ1"
 
-PAYPAL_CLIENT_ID = 'AYl37zK_CtsjR1OHczWeJInSWmDcajP2ub797KQ4hzOTlH_obTpf_DSwhy0aZnQJA_aEk87sdy6S8SiE'
-PAYPAL_SECRET = 'ELb18aC8JDFp2oQOYOcXhpmifN7YH92gncYnmJ4-JC9sNHl6yFBcdeK-n9_pHKGxtSKBLlZueiOs4GZw'
-access_token = 'A21AALNkoORiuidEGM79ifl5yU6IyO53ZZCWGzhiWDL6U4MQtuGfcvl3YUhwXLlXJ1ruC1nBVlkLlxImJEmOF0fE1Rnl3bR9Q","token_type":"Bearer","app_id":"APP-80W284485P519543T'
-PAYPAL_RECEIVER_EMAIL = 'neilahmasibo@gmail.com'
-PAYPAL_TEST = True
+
+
 
 
 
@@ -195,4 +188,3 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 
 
-SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'

@@ -13,30 +13,17 @@
                         <div class="col-lg-6">
                             <div class="p-3">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Choose Event</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Payment Details</h1>
                                 </div>
-                                <h1>Upcoming Events</h1>
-  <ul>
-    {% for event in events %}
-      <li><a href="{% url 'payment:event_detail' pk=event.pk %}">{{ event.event_name }}</a></li>
-    {% empty %}
-      <li>No events currently scheduled.</li>
-    {% endfor %}
-  </ul>
                               
                                 <div class="container">
-                                   
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-  </head>
-  <body>
-    <!-- Replace "test" with your own sandbox Business account app client ID -->
-    {{ form.render }}
-  </body>
-</html>
-
+                                    <form id="submitcheckout" action="" method="POST" class="text-center">  
+                                      {% csrf_token %} 
+                                        <div class="form-group">
+                                            <input type="tel" class="form-control" name="phone_number" placeholder="Enter your Phone Number">
+                                          </div>
+                                          <button type="submit" class="btn btn-success">proceed</button>
+                                   </form>
                                  
                                 <hr>
                             </div>
