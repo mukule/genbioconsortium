@@ -6,10 +6,6 @@ from .views import (
     
 )
 from . import views
-
-
-
-app_name = 'payment'
 urlpatterns = [
     path('', EventListView.as_view(), name='index'),
     path('<int:pk>', EventDetailView.as_view(), name='event_detail'),

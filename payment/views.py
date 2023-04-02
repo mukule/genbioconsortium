@@ -1,32 +1,23 @@
-from django.shortcuts import render, get_object_or_404,redirect
+import requests
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
-from django.views.generic import ListView, DetailView
-from .forms import TicketForm
-from .models import *
-from paypal.standard.forms import PayPalPaymentsForm
-from decimal import Decimal
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-from urllib.request import urlopen
-from urllib.parse import urlencode
-from paypal.standard.models import ST_PP_COMPLETED
-from django.http import HttpResponseBadRequest
-from paypal.standard.ipn.models import PayPalIPN
-from django.http import HttpResponseServerError
-import paypalrestsdk
-from genbioconsortium.settings import PAYPAL_CLIENT_ID, PAYPAL_SECRET, access_token
+from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 import json
-from paypalrestsdk import Order
+from django.http import HttpResponse
 import requests
+from requests.auth import HTTPBasicAuth
 import base64
+from django.views.decorators.csrf import csrf_exempt
 import uuid
 from .models import Event, Ticket, Payment
+from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.http import HttpResponseNotAllowed
 from datetime import datetime
 from django.http import HttpResponseRedirect
 from membership.models import MembershipRegistration
+from genbioconsortium.settings import PAYPAL_CLIENT_ID, PAYPAL_SECRET
 
 
 def generate_access_token():
