@@ -29,11 +29,11 @@ import os
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 
-ALLOWED_HOSTS = ['102.216.119.2', 'python.kenyaweb.com']
+ALLOWED_HOSTS = ['*']
 
 
 
@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     #add the user app
     'users',
     'crispy_forms',
+    'crispy_bootstrap4',
     'django_daraja',
     'payment',
     'django_bootstrap_icons',
@@ -98,11 +99,11 @@ WSGI_APPLICATION = 'genbioconsortium.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'soft01v_bio',
-        'USER': 'soft01v_neslon',
-        'PASSWORD': 'Neilah@1',
+        'NAME': 'consortium',
+        'USER': 'root',
+        'PASSWORD': '',
         'HOST': 'localhost',
-        'PORT': '2700',
+        'PORT': '3306',
     }
 }
 
@@ -145,7 +146,6 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL='/static/'
-STATIC_ROOT=os.path.join(BASE_DIR, 'static/')
 MEDIA_URL='/media/'
 MEDIA_ROOT=os.path.join(BASE_DIR, 'media/')
 

@@ -10,7 +10,6 @@ from requests.auth import HTTPBasicAuth
 import base64
 from django.views.decorators.csrf import csrf_exempt
 import uuid
-from .models import Event, Ticket, Payment
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from django.http import HttpResponseNotAllowed
@@ -94,16 +93,6 @@ def payment_done(request):
 
 
 # Your code here
-
-
-class EventListView(ListView):
-    model = Event
-    template_name = 'payment/index.html'
-    context_object_name = 'events'
-
-class EventDetailView(DetailView):
-    model = Event
-    template_name = 'payment/event_detail.html'
 
     
  
