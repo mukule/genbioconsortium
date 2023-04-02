@@ -94,8 +94,14 @@ body {
         text-decoration: none;
     }
     .form-group button.btn-success {
-        border-radius: 50px !important;
-    }
+      border-radius: 50px !important;
+  }
+  
+  .form-group.text-center {
+      display: flex;
+      justify-content: center;
+  }
+  
 
     .form-group .no-style-link {
         color: inherit;

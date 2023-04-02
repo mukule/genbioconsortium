@@ -26,90 +26,7 @@ from django.utils import timezone
 from django.http import HttpResponseNotAllowed
 from datetime import datetime
 from django.http import HttpResponseRedirect
-
-
-
-
-
-SANDBOX_BASE_URL = "https://api-m.sandbox.paypal.com"
-PRODUCTION_BASE_URL = "https://api-m.paypal.com"
-
-@csrf_exempt
-def create_paypal_order(request, event_id):
-    event = get_object_or_404(Event, pk=event_id)
-    
-    access_token = generate_access_token()
-    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders"
-    payload = {
-        "intent": "CAPTURE",
-        "purchase_units": [
-            {
-                "amount": {
-                    "currency_code": "USD",
-                    "value": str(event.fee)
-                }
-            }
-        ]
-    }
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {access_token}"
-    }
-    response = requests.post(url, json=payload, headers=headers)
-    order = response.json()
-    return JsonResponse(order)
-
-
-
-@csrf_exempt
-def capture_paypal_order(request, event_id):
-    event = get_object_or_404(Event, id=event_id)
-    data = json.loads(request.body)
-    order_id = data['orderID']
-
-    access_token = generate_access_token()
-    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders/{order_id}/capture"
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {access_token}"
-    }
-
-    response = requests.post(url, headers=headers)
-    result = response.json()
-    status = result['status']
-    print(status)
-    if status == 'COMPLETED':
-        for purchase_unit in result['purchase_units']:
-            payments = purchase_unit['payments']
-            for capture in payments['captures']:
-                amount = Decimal(capture['amount']['value'])
-                currency = capture['amount']['currency_code']
-                payer_email = result['payment_source']['paypal']['email_address']
-                country_code = result['payment_source']['paypal']['address']['country_code']
-                time_paid = capture['create_time']
-                print(f"Payment captured successfully. Amount: {amount} {currency}")
-
-                # Save ticket object
-                num_tickets_sold = Ticket.objects.filter(event=event).count()
-                ticket_number = f'T{event.id:06d}-{num_tickets_sold+1:06d}'
-                ticket = Ticket(event=event, user=request.user, num_tickets=1, ticket_number=ticket_number,
-                                price=amount, paid=True, country_code=country_code, time_paid=time_paid,
-                                currency=currency, payer_email=payer_email)
-                ticket.save()
-
-        # Redirect to payment done page after all captures have been processed
-        print('Redirecting to payment_done')
-        print(reverse('payment:payment_done'))
-        return HttpResponseRedirect(reverse('payment:payment_done'))
-        
-    else:
-        print("Payment capture failed")
-
-    return HttpResponse()
-
-@csrf_exempt
-def payment_done(request):
-    return HttpResponseRedirect('/payment/payment_done/')
+from membership.models import MembershipRegistration
 
 
 def generate_access_token():
@@ -125,6 +42,65 @@ def generate_access_token():
     data = response.json()
     
     return data["access_token"]
+
+
+
+SANDBOX_BASE_URL = "https://api-m.sandbox.paypal.com"
+PRODUCTION_BASE_URL = "https://api-m.paypal.com"
+
+@csrf_exempt
+def create_paypal_order(request):
+    membership_reg = get_object_or_404(MembershipRegistration, user=request.user)
+    access_token = generate_access_token()
+    host = request.get_host() 
+    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders"
+    payload = {
+        "intent": "CAPTURE",
+        "application_context": {
+            "brand_name": "African Genetic Biocontrol Consortium",
+            "locale": "en-US",
+            "landing_page": "BILLING",
+            "user_action": "PAY_NOW",
+            "webhook_urls": [
+                {
+                    "url": 'http://{}{}'.format(host,
+                                           reverse('payment:paypal_webhook'))
+                }
+            ]
+        },
+        "purchase_units": [
+            {
+                "amount": {
+                    "currency_code": "USD",
+                    "value": str(membership_reg.membership_price)
+
+                },
+                "reference_id": str(membership_reg.id)
+                
+            }
+        ]
+    }
+    print(payload)
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}"
+    }
+    response = requests.post(url, json=payload, headers=headers)
+    order = response.json()
+    print(order)
+    return JsonResponse(order)
+
+
+@csrf_exempt
+def paypal_webhook(request):
+    print(request.body)
+    return HttpResponse(status=200)
+
+
+@csrf_exempt
+def payment_done(request):
+    return HttpResponseRedirect('/payment/payment_done/')
+
 
 # Your code here
 

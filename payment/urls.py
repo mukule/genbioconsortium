@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import payment_canceled, create_paypal_order, capture_paypal_order
+from .views import payment_canceled, create_paypal_order, paypal_webhook
 from .views import (
     EventListView, 
     EventDetailView, 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('<int:pk>', EventDetailView.as_view(), name='event_detail'),
     path('payment_done/', views.payment_done, name='payment_done'),
     path('canceled/', payment_canceled, name='payment_canceled'),
-    path('order/<int:event_id>/', create_paypal_order, name='order'),
-    path('complete/<int:event_id>/', capture_paypal_order, name='complete' ),
+    path('create_paypal_order', create_paypal_order, name='create_paypal_order'),
+    path('paypal_webhook', views.paypal_webhook, name='paypal_webhook'),
     
 ]

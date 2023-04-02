@@ -31,7 +31,7 @@ import os
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*', '770b-197-232-61-198.in.ngrok.io']
 
 
 # Application definition
@@ -53,9 +53,7 @@ INSTALLED_APPS = [
     'django_bootstrap_icons',
     'captcha',
     'paypal.standard.ipn',
-    
-    
-  
+    'membership',
     
 
 ]
@@ -97,7 +95,7 @@ WSGI_APPLICATION = 'genbioconsortium.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'bioconsortium',
+        'NAME': 'consortium',
         'USER': 'root',
         'PASSWORD': '',
         'HOST': 'localhost',
@@ -105,6 +103,8 @@ DATABASES = {
         
     }
 }
+
+
 
 
 
@@ -166,15 +166,13 @@ LOGOUT_REDIRECT_URL = 'login'
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'kenyawebtest@gmail.com'
+EMAIL_FROM = 'Nelson.masibo.kenyaweb.com'
 EMAIL_HOST_USER = 'kenyawebapps87@gmail.com'
 EMAIL_HOST_PASSWORD = 'pzjotxvpakzrzlhi'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
-
-
 #mpesa payment details
 consumer_key = "piumJBdCtSxo6GX9p8j8kqcljVJNXJMA"
 consumer_secret = "pd7cx9QgbZReJdZ1"

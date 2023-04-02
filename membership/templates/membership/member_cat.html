@@ -1,0 +1,32 @@
+{% extends 'users/base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <h3 class="text-center">Membership Registration Fee</h3>
+    <div class="row">
+      {% for category in categories %}
+        <div class="col-md-4" style="height: 300px;">
+          <div class="card text-center">
+            <div class="card-header">
+              <p>{{ category.title }}</p>
+              <p><b>$: {{ category.price }}</b></p>
+            </div>
+            <div class="card-body">
+              
+            </div>
+            <div class="card-footer text-center">
+              <a href="{% url 'membership:membership_registration' category.id %}" class="btn btn-success">Register</a>
+
+            </div>
+          </div>
+        </div>
+        {% empty %}
+            <div class="col-md-12">
+              <p>No Membership found.</p>
+            </div>
+          {% endfor %}
+      </div>
+    </div>
+  
+{% endblock content %}
