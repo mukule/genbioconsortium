@@ -59,6 +59,7 @@ INSTALLED_APPS = [
     'paypal.standard.ipn',
     'membership',
     
+    
 
 ]
 
@@ -175,9 +176,7 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 PASSWORD_RESET_TIMEOUT = 14400
-#mpesa payment details
-consumer_key = "piumJBdCtSxo6GX9p8j8kqcljVJNXJMA"
-consumer_secret = "pd7cx9QgbZReJdZ1"
+
 
 
 
@@ -190,5 +189,8 @@ RECAPTCHA_PUBLIC_KEY = '6LcV3RQlAAAAANRWtvANODusNIRKJg61r8PR-uK-'
 RECAPTCHA_PRIVATE_KEY = '6LcV3RQlAAAAADkIkGLs9X2Gb5Z7hK3y7Ayd7lQ-'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
+SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
 
 
+
+# include /etc/nginx/conf.d/*.conf;
