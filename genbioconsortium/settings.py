@@ -169,19 +169,22 @@ LOGOUT_REDIRECT_URL = 'login'
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_FROM = 'Nelson.masibo.kenyaweb.com'
-EMAIL_HOST_USER = 'kenyawebapps87@gmail.com'
-EMAIL_HOST_PASSWORD = 'pzjotxvpakzrzlhi'
+EMAIL_FROM = 'nelson.masibo.kenyaweb.com'
+EMAIL_HOST_USER = 'kushdinesh98@gmail.com'
+EMAIL_HOST_PASSWORD = 'gskfoyoeojmrgsrk'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
+DEFAULT_FROM_EMAIL = 'African Genetic Biocontrol Consortium'
+
+
 
 PASSWORD_RESET_TIMEOUT = 14400
 
 
 
 
-PAYPAL_CLIENT_ID = 'AYl37zK_CtsjR1OHczWeJInSWmDcajP2ub797KQ4hzOTlH_obTpf_DSwhy0aZnQJA_aEk87sdy6S8SiE'
-PAYPAL_SECRET = 'ELb18aC8JDFp2oQOYOcXhpmifN7YH92gncYnmJ4-JC9sNHl6yFBcdeK-n9_pHKGxtSKBLlZueiOs4GZw'
+PAYPAL_CLIENT_ID = 'AW3qtSAth92Kzyc0vyB-wwkrbu_V1hobrKTH2_hMvCJygKrwE-nLStAE3GwRAy72LBmNi88VgAUV6NI-'
+PAYPAL_SECRET = 'EGuTH6oJ3Oy92TQ3q_z-UUN7uMM_5-aedSpuq3XljJSDfnOzt3k1mqFvf7kalpJqcVskvOJKAVVBxoae'
 
 
 
@@ -190,6 +193,8 @@ RECAPTCHA_PRIVATE_KEY = '6LcV3RQlAAAAADkIkGLs9X2Gb5Z7hK3y7Ayd7lQ-'
 SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 
 SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
+
+AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
 
 
 

@@ -6,21 +6,20 @@
     <h3 class="text-center mt-3">Choose your Preferred Payment method</h3>
     <hr>
     <div class="row py-5">
-        <div class="col-md-4" style="height: 300px;">
-          <div class="card text-center">
-            <div class="card-header bg-success">
-           <p class="text-white">LIPA NA MPESA</p>
-            </div>
-            <div class="card-body">
-              
-            </div>
-            <div class="card-footer text-center">
-             <p>Enter Phone Number</p>
+        <div class="col-md-6" style="height: 300px;">
+          <div class="card text-center shadow-sm">
+            <div class="card-header">
+              <h5>Your Membership Details</h5>
+              <hr>
+           <p><b>Category:</b> {{ membership.membership }}</p>
+           <p><b>Fee:</b> ${{ membership.membership_price }}</p>
+           <hr>
             </div>
           </div>
-        </div>
-        <div class="col-md-4" style="height: 300px;">
-            <div class="card text-center">
+          
+          </div>
+          <div class="col-md-6" style="height: 300px;">
+            <div class="card text-center shadow-sm">
             
               <div class="card-body">
                 <script src="https://www.paypal.com/sdk/js?client-id=AYl37zK_CtsjR1OHczWeJInSWmDcajP2ub797KQ4hzOTlH_obTpf_DSwhy0aZnQJA_aEk87sdy6S8SiE&currency=USD"></script>
@@ -69,17 +68,6 @@
                                     
               </div>
              
-            </div>
-          </div>
-          <div class="col-md-4" style="height: 300px;">
-            <div class="card text-center shadow-sm">
-              <div class="card-header">
-                <h5>Your Membership Details</h5>
-                <hr>
-             <p><b>Category:</b> {{ membership.membership }}</p>
-             <p><b>Fee:</b> ${{ membership.membership_price }}</p>
-             <hr>
-              </div>
             </div>
           </div>
       </div>

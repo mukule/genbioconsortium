@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django_countries.fields import CountryField
 
 # Create your models here.
 class MembershipCategory(models.Model):
@@ -15,7 +16,7 @@ class MembershipRegistration(models.Model):
     membership = models.CharField(max_length=100)
     institution = models.CharField(max_length=100)
     city = models.CharField(max_length=100)
-    country = models.CharField(max_length=100)
+    country = CountryField()
     occupation = models.CharField(max_length=100)
     terms_checkbox = models.BooleanField(default=False)
     first_name = models.CharField(max_length=30)

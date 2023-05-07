@@ -42,11 +42,10 @@ PRODUCTION_BASE_URL = "https://api-m.paypal.com"
 def create_paypal_order(request):
     membership_reg = get_object_or_404(MembershipRegistration, user=request.user)
     access_token = generate_access_token()
-    host = request.get_host() 
+    host = request.get_host()
+    webhook_url = 'https://{}{}'.format(host, reverse('payment:paypal_webhook'))
     return_url = 'http://{}{}'.format(host, reverse('payment:payment_done'))
     cancel_url = 'http://{}{}'.format(host, reverse('payment:payment_canceled'))
-    print("return_url:", return_url)  # add this line for debugging
-    print("cancel_url:", cancel_url)  # add this line for debugging
     url = f"{SANDBOX_BASE_URL}/v2/checkout/orders"
     payload = {
         "intent": "CAPTURE",
@@ -57,7 +56,7 @@ def create_paypal_order(request):
             "user_action": "PAY_NOW",
             "webhook_urls": [
                 {
-                    "url": 'http://{}{}'.format(host, reverse('payment:paypal_webhook'))
+                    "url": webhook_url
                 }
             ],
             "return_url": return_url,
@@ -68,10 +67,8 @@ def create_paypal_order(request):
                 "amount": {
                     "currency_code": "USD",
                     "value": str(membership_reg.membership_price)
-
                 },
                 "reference_id": str(membership_reg.id)
-                
             }
         ]
     }
@@ -79,9 +76,13 @@ def create_paypal_order(request):
         "Content-Type": "application/json",
         "Authorization": f"Bearer {access_token}"
     }
+    print(webhook_url)
+    print("return_url:", return_url)
+    print("cancel_url:", cancel_url)
     response = requests.post(url, json=payload, headers=headers)
     order = response.json()
     return JsonResponse(order)
+
 
 
 @csrf_exempt

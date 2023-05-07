@@ -38,6 +38,7 @@ def membership_registration(request, category_id):
             instance = form.save(commit=False)
             instance.user = user
             instance.save()
+            messages.success(request, 'Membership registration details updated succesful')
             return redirect('membership:payment_method')
         
     context = {

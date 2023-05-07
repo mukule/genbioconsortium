@@ -26,6 +26,7 @@ from django.core.mail import EmailMultiAlternatives
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.utils.html import strip_tags
+from .forms import UserLoginForm
 
 
 # Create your views here.
@@ -87,39 +88,29 @@ def activate(request, uidb64, token):
     return redirect('login')
 
 def customized_login(request):
-    if request.method == 'POST':
-        valuenext= request.POST.get('next')
-        form = AuthenticationForm(request=request, data=request.POST)
+    if request.method == "POST":
+        form = UserLoginForm(request=request, data=request.POST)
         if form.is_valid():
             user = authenticate(
-                username=form.cleaned_data['username'],
-                password=form.cleaned_data['password'],
+                username=form.cleaned_data["username"],
+                password=form.cleaned_data["password"],
             )
-            if user is not None and valuenext == '':
+            if user is not None:
                 login(request, user)
-                messages.success(request, f"You have been logged in as {user.username}")
-                return redirect('home')
-            
-            if user is not None and valuenext!='':
-                login(request, user)
-                context= {'form': form, 'valuenext': valuenext}
+                messages.success(request, f"Succesfully logged in as {user.username}")
+                return redirect("home")
 
-                messages.success(request, f"Hello {user.username} You have been logged in")
-                return redirect(valuenext)
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request, error) 
 
-            else:
-                for error in list(form.errors.values()):
-                    messages.error(request, error) 
-       
+    form = UserLoginForm()
 
-    form = AuthenticationForm() 
-    
     return render(
-        request=request,template_name="users/login.html", context={'form': form}
+        request=request,
+        template_name="users/login.html",
+        context={"form": form}
         )
-
-
-
 @login_required
 def customized_logout(request):
     logout(request)
