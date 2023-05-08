@@ -44,8 +44,8 @@ def create_paypal_order(request):
     access_token = generate_access_token()
     host = request.get_host()
     webhook_url = 'https://{}{}'.format(host, reverse('payment:paypal_webhook'))
-    return_url = 'http://{}{}'.format(host, reverse('payment:payment_done'))
-    cancel_url = 'http://{}{}'.format(host, reverse('payment:payment_canceled'))
+    return_url = 'https://{}{}'.format(host, reverse('payment:payment_done'))
+    cancel_url = 'https://{}{}'.format(host, reverse('payment:payment_canceled'))
     url = f"{SANDBOX_BASE_URL}/v2/checkout/orders"
     payload = {
         "intent": "CAPTURE",
