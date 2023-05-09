@@ -17,6 +17,8 @@ from datetime import datetime
 from django.http import HttpResponseRedirect
 from membership.models import MembershipRegistration
 from genbioconsortium.settings import PAYPAL_CLIENT_ID, PAYPAL_SECRET
+from paypalcheckoutsdk.orders import OrdersCreateRequest
+from paypalcheckoutsdk.orders import OrdersCaptureRequest
 
 
 def generate_access_token():
@@ -50,7 +52,7 @@ def create_paypal_order(request):
     payload = {
         "intent": "CAPTURE",
         "application_context": {
-            "brand_name": "African Genetic Biocontrol Consortium",
+            "brand_name": "Gen Bio consortium",
             "locale": "en-US",
             "landing_page": "BILLING",
             "user_action": "PAY_NOW",
@@ -81,44 +83,56 @@ def create_paypal_order(request):
     print(order)
     return JsonResponse(order)
 
-
 @csrf_exempt
-def payment_done(request):
-    order_id = request.POST.get('orderID')
-    print(order_id)
+def paypal_webhook(request):
+    print('PayPal webhook called')
+    payload = json.loads(request.body)
+    print('Payload:', payload)
+
+    # Retrieve payment details from PayPal API
     access_token = generate_access_token()
-    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders/{order_id}/capture"
     headers = {
         "Content-Type": "application/json",
         "Authorization": f"Bearer {access_token}"
     }
-    payload = {}
-    response = requests.post(url, json=payload, headers=headers)
-    capture = response.json()
-    print(capture)
-    if capture['status'] == 'COMPLETED':
-        # Handle the case when the payment was successfully completed
-        # e.g., update the user's membership status, send a confirmation email, etc.
-        return render(request, 'payment/payment_done.html')
+    order_id = payload.get("orderID")
+    print(order_id)
+    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders/{order_id}/capture"
+    print(url)
+    response = requests.post(url, headers=headers)
+    print(response)
+    payment_details = response.json()
+    print(payment_details)
+    # Check if payment status is 'COMPLETED'
+    if payment_details['status'] == 'COMPLETED':
+        # Payment was successful
+        # Do something here, e.g. mark the order as paid in your system
+        return HttpResponse(status=200)
     else:
-        # Handle the case when the payment was canceled or failed
-        # e.g., show an error message to the user, log the failure, etc.
-        return render(request, 'payment/payment_canceled.html')
-
-
+        # Payment was not successful
+        # Do something here, e.g. mark the order as failed in your system
+        return HttpResponse(status=400)
 
 
 @csrf_exempt
-def paypal_webhook(request):
-    print('we are here')
-    print(request.body)
-    return HttpResponse(status=200)
+def payment_done(request):
+    access_token = generate_access_token()
+    headers = {
+        "Content-Type": "application/json",
+        "Authorization": f"Bearer {access_token}"
+    }
+    order_id = request.POST.get("orderID")
+    url = f"{SANDBOX_BASE_URL}/v2/checkout/orders/{order_id}/capture"
+    response = requests.post(url, headers=headers)
+    order_data = response.json()
+    # Update your database here with the payment details
+    return JsonResponse(order_data)
+
+
+
 
 
 # Your code here
 
-    
- 
-
 def payment_canceled(request):
-    return render(request, 'payment/payment_fail.html')
+    return render(request, 'payment/payment_error.html')
