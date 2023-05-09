@@ -22,7 +22,7 @@
             <div class="card text-center shadow-sm">
             
               <div class="card-body">
-                <script src="https://www.paypal.com/sdk/js?client-id=AWweB1Tx8aenCx6x3xeLgQatxoKHZ395o2UBpydjpiQQvnPf5K_Yq-DoS-rXiSPKRwCw8m8p0qcYsHu5&currency=USD"></script>
+                <script src="https://www.paypal.com/sdk/js?client-id=AW3qtSAth92Kzyc0vyB-wwkrbu_V1hobrKTH2_hMvCJygKrwE-nLStAE3GwRAy72LBmNi88VgAUV6NI-&currency=USD"></script>
                                     <!-- Set up a container element for the button -->
                                     <div id="paypal-button-container"></div>
                                     <script>
@@ -40,8 +40,7 @@
                                             body: JSON.stringify({
                                               cart: [
                                                 {
-                                                  sku: "YOUR_PRODUCT_STOCK_KEEPING_UNIT",
-                                                  quantity: "YOUR_PRODUCT_QUANTITY",
+                                                  sku: "1st Global Congress On New And Emerging Genetic Biocontrol Technologies",
                                                 },
                                               ],
                                             }),
@@ -51,7 +50,7 @@
                                         },
                                         // Finalize the transaction on the server after payer approval
                                         
-                                        onApprove: function(data, actions) {
+                                                                                onApprove: function(data, actions) {
                                           // Capture the funds from the transaction
                                           return actions.order.capture().then(function(details) {
                                             // Call your server to save the transaction
@@ -65,22 +64,23 @@
                                                 paymentID: details.id
                                               })
                                             })
-                                            .then(function(res) {
-                                              if (res.ok) {
-                                                return res.json();
-                                              }
-                                              throw new Error('Network response was not ok.');
-                                            })
                                             .then(function(response) {
-                                              alert('Capture response: ' + JSON.stringify(response));
-                                              window.location.href = "{% url 'payment:payment_done' %}"; // Redirect to success page
+                                              // Check if the payment was successful
+                                              if (response.ok) {
+                                                // Redirect the user to a payment done page
+                                                window.location.href = "{% url 'payment:payment_done' %}";
+                                              } else {
+                                                // Handle the error
+                                                console.error('Payment failed');
+                                              }
                                             })
                                             .catch(function(error) {
-                                              console.error('Error capturing payment:', error);
-                                              window.location.href = "{% url 'payment:payment_canceled' %}"; // Redirect to error page
+                                              // Handle the error
+                                              console.error(error);
                                             });
                                           });
                                         }
+
 
 
 

@@ -23,6 +23,7 @@ class MembershipRegistration(models.Model):
     last_name = models.CharField(max_length=30)
     email = models.EmailField()
     membership_price = models.DecimalField(max_digits=8, decimal_places=2)
+    paid = models.BooleanField(default=False)
 
     def __str__(self):
-        return f"{self.user.username}'s Membership Registration"
+        return f"{self.membership} - {self.first_name} {self.last_name}"
