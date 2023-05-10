@@ -195,6 +195,7 @@ SILENCED_SYSTEM_CHECKS = ['captcha.recaptcha_test_key_error']
 SECURE_CROSS_ORIGIN_OPENER_POLICY='same-origin-allow-popups'
 
 AUTHENTICATION_BACKENDS = ['users.backends.EmailBackend']
+AUTH_USER_MODEL = 'users.CustomUser'
 
 
 

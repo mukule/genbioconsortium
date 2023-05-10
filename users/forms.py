@@ -1,4 +1,4 @@
-from django.contrib.auth.models import User
+from .models import CustomUser
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from django.contrib.auth import get_user_model
@@ -37,9 +37,8 @@ class UserRegisterForm(UserCreationForm):
         widget=forms.PasswordInput(attrs={'placeholder': 'Confirm Password', 'class': 'form-control', 'autocomplete': 'new-password'}),
     )
 
-
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username', 'first_name', 'last_name', 'email', 'password1', 'password2']
 
 class UserLoginForm(AuthenticationForm):
@@ -57,21 +56,16 @@ class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
 
     class Meta:
-        model = get_user_model()
+        model = CustomUser
         fields = ['first_name', 'last_name', 'email']
- 
 
-class SetPasswordForm(SetPasswordForm):
+class CustomSetPasswordForm(SetPasswordForm):
     class Meta:
-        model = get_user_model()
+        model = CustomUser
         fields = ['new_password1', 'new_password2']
 
-class PasswordResetForm(PasswordResetForm):
+class CustomPasswordResetForm(PasswordResetForm):
     def __init__(self, *args, **kwargs):
-        super(PasswordResetForm, self).__init__(*args, **kwargs)
+        super(CustomPasswordResetForm, self).__init__(*args, **kwargs)
 
         # captcha = ReCaptchaField(widget=ReCaptchaV2Checkbox())
-
-
-
-

@@ -18,12 +18,25 @@
                                     <form action="" method="POST">
                                         {% csrf_token %}
                                         <div class="form-group">
-                                            {{ form.username|as_crispy_field }}
+                                            {{ form.username }}
+                                            {% if form.errors.username %}
+                                                {% for error in form.errors.username %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
                                         <div class="form-group">
-                                            {{ form.password|as_crispy_field }}
+                                            {{ form.password }}
+                                            {% if form.errors.password %}
+                                                {% for error in form.errors.password %}
+                                                    <div class="alert alert-danger" role="alert">
+                                                        {{ error }}
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
                                         </div>
-                                        
                                         <div class="form-group">
                                             <input type="checkbox" name="remember_me">Remember Me
                                         </div>
@@ -31,7 +44,8 @@
                                         <div class="form-group my-3" id="signup-button">
                                             <button class="btn btn-success">Sign in</button>
                                         </div>
-                                      </form>
+                                    </form>
+                                    
                                     <hr>
     
                                     <div class="form-group text-center">

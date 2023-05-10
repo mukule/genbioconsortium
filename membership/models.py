@@ -1,6 +1,8 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django_countries.fields import CountryField
+
+CustomUser = get_user_model()
 
 class MembershipCategory(models.Model):
     title = models.CharField(max_length=50)
@@ -10,7 +12,7 @@ class MembershipCategory(models.Model):
         return self.title
 
 class MembershipRegistration(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     membership_category = models.ForeignKey(MembershipCategory, on_delete=models.CASCADE, null=True)
     membership = models.CharField(max_length=100)
     institution = models.CharField(max_length=100)
@@ -28,7 +30,7 @@ class MembershipRegistration(models.Model):
         return f"{self.membership} - {self.first_name} {self.last_name}"
 
 class Payment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
     membership_registration = models.ForeignKey(MembershipRegistration, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=8, decimal_places=2)

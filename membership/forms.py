@@ -1,8 +1,8 @@
 from django import forms
-from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django_countries.widgets import CountrySelectWidget
 from .models import MembershipRegistration
+from users.models import CustomUser
 
 class MembershipRegistrationForm(forms.ModelForm):
     first_name = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control'}), label='First Name')
@@ -18,7 +18,7 @@ class MembershipRegistrationForm(forms.ModelForm):
     occupation = forms.CharField(max_length=30, widget=forms.TextInput(attrs={'class': 'form-control'}), label='Occupation')
     terms_checkbox = forms.BooleanField(widget=forms.CheckboxInput(attrs={'class': 'form-check-input'}), label='I agree to the terms and conditions', error_messages={'required': 'You must agree to the terms and conditions'})
     membership_price = forms.DecimalField(max_digits=6, decimal_places=2, widget=forms.TextInput(attrs={'class': 'form-control', 'readonly': 'readonly'}), label='Membership Price')
-    user = forms.ModelChoiceField(queryset=User.objects.all(), widget=forms.HiddenInput(), required=False)
+    user = forms.ModelChoiceField(queryset=CustomUser.objects.all(), widget=forms.HiddenInput(), required=False)
 
     class Meta:
         model = MembershipRegistration
