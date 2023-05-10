@@ -234,8 +234,14 @@ body {
     color: #007bff;
   }
   
-  
-  
+  #my-btn-group {
+    all: unset;
+    display: inline-flex;
+  }
+  #my-btn-group .btn {
+    border-radius: 20px;
+    height: 40px;
+  }
   
   
   

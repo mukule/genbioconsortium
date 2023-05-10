@@ -59,7 +59,7 @@
   {% load bootstrap_icons %}
   <nav class="navbar navbar-expand-lg navbar-light bg-light shadow-sm" id="main-navbar">
     <div class="container">
-      <a class="navbar-brand" href="{% url 'home' %}">
+      <a class="navbar-brand" href="{% url 'login' %}">
         <img src="{% static 'users/images/logo200-140x69.png' %}" alt="">
       </a>
   
@@ -83,10 +83,10 @@
         </li>
           {% else %}
           <li class="nav-item">
-            <div class="btn-group me-2">
-              <a href="{% url 'register' %}" class="btn btn-primary custom-btn-style" id="header-links">Create Account</a>
-              <a href="{% url 'login' %}" class="btn btn-primary custom-btn-style" id="header-links">Log In</a>
-            </div>
+            <div class="btn-group" id="my-btn-group">
+              <a href="{% url 'register' %}" class="btn btn-success mr-2">Sign Up</a>
+              <a href="{% url 'login' %}" class="btn btn-success">Sign In</a>
+            </div>                      
           </li>
           {% endif %}
         </ul>

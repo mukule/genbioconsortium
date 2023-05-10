@@ -98,7 +98,7 @@ def customized_login(request):
             if user is not None:
                 login(request, user)
                 messages.success(request, f"Succesfully logged in as {user.username}")
-                return redirect("home")
+                return redirect("membership:member_cat")
 
         else:
             for error in list(form.errors.values()):
