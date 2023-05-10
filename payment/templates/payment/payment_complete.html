@@ -12,15 +12,33 @@
                         <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
                         <div class="col-lg-6">
                             <div class="p-3">
-                                <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Payment Details</h1>
+                                {% if payment %}
+                            <div class="receipt">
+                                <div class="receipt-header">
+                                    <h6><strong>African Genetic Bio Control Consortium Receipt</strong></h6>
                                 </div>
-                              
-                                <div class="container">
-                                 <h3>Please check your Phone for a Push Notification and Enter your Mpesa pin</h3>
-                                 
-                                <hr>
+                                <div class="receipt-details" style="text-align: center;">
+                                    <p>Name: {{ payment.full_name }}</p>
+                                    <p>Email: {{ payment.email }}</p>
+                                    <p>Membership category: {{ payment.membership_type }}</p>
+                                    <p>Payment ID: {{ payment.payment_id }}</p>
+                                    <hr>
+                                    <p>Gross pay: USD {{ payment.gross_pay }}</p>
+                                    <p>PayPal fee: USD {{ payment.paypal_fee }}</p>
+                                    <p>Net pay: USD {{ payment.net_pay }}</p>
+                                    <small>{{ payment.timestamp }}</small>
+                                </div>
+                                <div class="receipt-footer">
+                                    <p>Thank you for your Registration!!!</p>
+                                </div>
+                                <div class="print-button">
+                                    <button class="btn btn-danger" onclick="window.print()">Download</button>
+                                </div>
                             </div>
+                            {% else %}
+                                <p>{{ error_message }}</p>
+                            {% endif %}
+
                         </div>
                     </div>
                 </div>
@@ -31,3 +49,4 @@
 </div>
   
 {% endblock %}
+

@@ -15,6 +15,44 @@
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500&family=Open+Sans:wght@800&display=swap" rel="stylesheet">
     <link rel="shortcut icon" href="{% static 'users/images/logo200-140x69.png' %}" type="image/x-icon">
+
+    <style>
+        /* Add your custom CSS styles for the receipt here */
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .receipt {
+            margin: 50px auto;
+            width: 400px;
+            padding: 20px;
+            border: 1px solid #ccc;
+        }
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .receipt-details {
+            margin-bottom: 20px;
+        }
+        .receipt-details label {
+            font-weight: bold;
+        }
+        .receipt-footer {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .print-button {
+            text-align: center;
+        }
+        @media print {
+            /* Hide the print button when printing */
+            .print-button {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
   </head>
   <body>
   {% load static %}
