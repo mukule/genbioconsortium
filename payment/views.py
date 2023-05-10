@@ -20,6 +20,9 @@ from genbioconsortium.settings import PAYPAL_CLIENT_ID, PAYPAL_SECRET
 from paypalcheckoutsdk.orders import OrdersCreateRequest
 from paypalcheckoutsdk.orders import OrdersCaptureRequest
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib import messages
+from django.template.loader import render_to_string
+from django.core.mail import EmailMessage
 
 
 def generate_access_token():
@@ -153,8 +156,18 @@ def paypal_webhook(request):
         # Mark the registration as paid
         membership_reg.paid = True
         membership_reg.save()
-        return render(request, 'payment/payment_complete.html')
 
+        # Send email notification
+        mail_subject = '1ST GLOBAL CONGRESS ON EMERGING GENETIC BIOCONTROL TECHNOLOGIES'
+        message = f"Thank you for your payment. You have successfully paid for the congress.\n\nPayment Details:\nTransaction ID: {order_id}\nAmount: USD {amount}\nMembership Type: {purchase_unit['description']}\nTimestamp: {datetime.now()}"
+        # to_email = payer['email_address']  # Use the payer's email address
+        to_email = request.user.email
+        email = EmailMessage(mail_subject, message, to=[to_email])
+        email.send()
+        print(to_email)
+
+        context = {'message': 'Payment completed successfully.'}
+        return render(request, 'payment/payment_complete.html', context)
     
     else:
         # Payment was not successful
@@ -173,3 +186,10 @@ def payment_done(request):
 
 def payment_canceled(request):
     return render(request, 'payment/payment_error.html')
+
+
+
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from datetime import datetime

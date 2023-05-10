@@ -5,13 +5,18 @@
  <div class="conta"></div>
  <div class="container">
     <div class="row justify-content-center">
+        <div class="col col-md-12">
+            <div class="alert alert-success" role="alert">
+                Thank you for registering for 1ST GLOBAL CONGRESS ON EMERGING GENETIC BIOCONTROL TECHNOLOGIES.A copy of this receipt has been mailed to you
+              </div>
+        </div>
         <div class="col-xl-10 col-lg-12 col-md-9">
             <div class="card o-hidden border-0 shadow-lg my-5">
                 <div class="card-body p-0">
                     <div class="row">
                         <div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
-                        <div class="col-lg-6">
-                            <div class="p-3">
+                        <div class="col-lg-4">
+                            <div class="p-0">
                                 {% if payment %}
                             <div class="receipt">
                                 <div class="receipt-header">
@@ -23,9 +28,7 @@
                                     <p>Membership category: {{ payment.membership_type }}</p>
                                     <p>Payment ID: {{ payment.payment_id }}</p>
                                     <hr>
-                                    <p>Gross pay: USD {{ payment.gross_pay }}</p>
-                                    <p>PayPal fee: USD {{ payment.paypal_fee }}</p>
-                                    <p>Net pay: USD {{ payment.net_pay }}</p>
+                                    <p>TOTAL PAID: USD {{ payment.gross_pay }}</p>
                                     <small>{{ payment.timestamp }}</small>
                                 </div>
                                 <div class="receipt-footer">
