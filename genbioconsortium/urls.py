@@ -17,6 +17,10 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 
+
+admin.site.site_header = 'GenBioConsortium ADMIN'
+admin.site.index_title = 'GenBioConsortium'
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
