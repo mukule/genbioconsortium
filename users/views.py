@@ -181,9 +181,9 @@ def password_reset_request(request):
                if email.send():
                 messages.success(request,"""Password reset has been emailed to you please check your mail""")
             else:
-                messages.error(request, "Problem sending reset password email, <b>An authentic error occurred/b>")
+                messages.error(request, "Problem sending reset password email")
 
-            return redirect('home')
+            return redirect('login')
 
         for key, error in list(form.errors.items()):
             if key == 'captcha' and error[0] == 'This field is required.':
