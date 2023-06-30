@@ -5,7 +5,7 @@
 <div class="container">
    <div class="card py-5">
     <div class="content-section col-lg-12 col-md-12 col-sm-12 tutorial-style" style="min-height:65vh;">
-        <legend class="border-bottom mb-4">Member Registration Details:</legend>
+        <legend class="border-bottom mb-4">Pre-Conference Member Registration Details:</legend>
         <form method="POST" action="" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="row">
@@ -56,7 +56,7 @@
                         </div>
                        
                         <div class="form-group col-md-10 mb-0">
-                            {{ form.membership_price|as_crispy_field }}
+                            {{ form.precongress_price|as_crispy_field }}
                         </div>
                     </div>
                 </div>

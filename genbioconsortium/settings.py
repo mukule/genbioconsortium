@@ -58,6 +58,8 @@ INSTALLED_APPS = [
     'captcha',
     'paypal.standard.ipn',
     'membership',
+    'precongress',
+    'fullcongress',
     
     
 

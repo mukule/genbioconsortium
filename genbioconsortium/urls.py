@@ -25,5 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
     path('membership/', include('membership.urls', namespace='membership')),
+    path('precongress/', include('precongress.urls', namespace='precongress')),
+    path('fullcongress/', include('fullcongress.urls', namespace='fullcongress')),
     path("payment/", include("payment.urls")),
 ]
