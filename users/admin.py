@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import *
 
 
 class CustomUserAdmin(UserAdmin):
@@ -22,4 +22,5 @@ class CustomUserAdmin(UserAdmin):
     # ordering = ['-date_joined']  # Example: Order by date joined descending
 
 admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(UserLoginRecord)
 

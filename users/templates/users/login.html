@@ -19,23 +19,9 @@
                                         {% csrf_token %}
                                         <div class="form-group">
                                             {{ form.username }}
-                                            {% if form.errors.username %}
-                                                {% for error in form.errors.username %}
-                                                    <div class="alert alert-danger" role="alert">
-                                                        {{ error }}
-                                                    </div>
-                                                {% endfor %}
-                                            {% endif %}
                                         </div>
                                         <div class="form-group">
                                             {{ form.password }}
-                                            {% if form.errors.password %}
-                                                {% for error in form.errors.password %}
-                                                    <div class="alert alert-danger" role="alert">
-                                                        {{ error }}
-                                                    </div>
-                                                {% endfor %}
-                                            {% endif %}
                                         </div>
                                         <div class="form-group">
                                             <input type="checkbox" name="remember_me">Remember Me

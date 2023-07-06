@@ -27,6 +27,10 @@ from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.utils.html import strip_tags
 from .forms import UserLoginForm
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import user_passes_test
+from .models import CustomUser
+
 
 
 # Create your views here.
@@ -97,8 +101,11 @@ def customized_login(request):
             )
             if user is not None:
                 login(request, user)
-                messages.success(request, f"Succesfully logged in as {user.username}")
-                return redirect("membership:member_cat")
+                messages.success(request, f"Successfully logged in as {user.username}")
+                if user.is_superuser:
+                    return redirect("manage")  # Redirect to the manage view for super admins
+                else:
+                    return redirect("membership:member_cat")  # Redirect to a different view for non-super admins
 
         else:
             for error in list(form.errors.values()):
@@ -110,7 +117,9 @@ def customized_login(request):
         request=request,
         template_name="users/login.html",
         context={"form": form}
-        )
+    )
+
+
 @login_required
 def customized_logout(request):
     logout(request)
@@ -223,6 +232,12 @@ def passwordResetConfirm(request, uidb64, token):
     messages.error(request, 'Something went wrong, redirecting back to Homepage')
     return redirect("home")
 
+def is_super_admin(user):
+    return user.is_authenticated and user.is_superuser
 
 
-
+@login_required(login_url='login')
+@user_passes_test(is_super_admin, login_url='login', redirect_field_name=None)
+def manage(request):
+    users = CustomUser.objects.all()
+    return render(request, 'users/manage.html', {'users': users})
