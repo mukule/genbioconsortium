@@ -170,14 +170,13 @@ LOGOUT_REDIRECT_URL = 'login'
 
 # Emailing settings
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'mail.registration@genbioconsortium.africa'
-EMAIL_FROM = 'registration@genbioconsortium.africa'
-EMAIL_HOST_USER = 'registration@genbioconsortium.africa'
-EMAIL_HOST_PASSWORD = 'africa@00'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_FROM = 'nelson.masibo.kenyaweb.com'
+EMAIL_HOST_USER = 'kushdinesh98@gmail.com'
+EMAIL_HOST_PASSWORD = 'gskfoyoeojmrgsrk'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'African Genetic Biocontrol Consortium'
-
 
 
 PASSWORD_RESET_TIMEOUT = 14400
@@ -185,8 +184,8 @@ PASSWORD_RESET_TIMEOUT = 14400
 
 
 
-PAYPAL_CLIENT_ID = ''
-PAYPAL_SECRET = ''
+PAYPAL_CLIENT_ID = 'AWweB1Tx8aenCx6x3xeLgQatxoKHZ395o2UBpydjpiQQvnPf5K_Yq-DoS-rXiSPKRwCw8m8p0qcYsHu5'
+PAYPAL_SECRET = 'EJTQQuuo2uLxuX7GK5kKBdZGg0FUJ76kR2eBaRmpeHxL9RZJTcrJggT0KVDV9Qyy_1xnd--CgNse2JBH'
 
 
 

@@ -4,5 +4,6 @@ from .models import *
 # Register your models here.
 
 admin.site.register(FullcongressCategory)
+admin.site.register(fullcongressRegistration)
 
 

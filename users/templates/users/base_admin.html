@@ -76,9 +76,9 @@
             </a>
             <ul class="dropdown-menu dropdown-menu-end border-0 text-center" aria-labelledby="navbarDropdown">
                 <li><a class="dropdown-item" href="{% url 'profile' user.username %}">Profile</a></li>
-                <li><a class="dropdown-item" href="">Pre-Congress Registration</a></li>
-                <li><a class="dropdown-item" href="">Congress Registration</a></li>
-                <li><a class="dropdown-item" href="">Full congress registration</a></li>
+                <li><a class="dropdown-item" href="{% url 'precongress:precongress_users' %}">Pre-Congress Registration</a></li>
+                <li><a class="dropdown-item" href="{% url 'membership:congress_members' %}">Congress Registration</a></li>
+                <li><a class="dropdown-item" href="{% url 'fullcongress:fullcongress_members' %}">Full congress registration</a></li>
                 <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
             </ul>

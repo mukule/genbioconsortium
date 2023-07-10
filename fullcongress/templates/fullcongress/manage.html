@@ -1,0 +1,81 @@
+{% extends 'users/base_admin.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+
+{% block content %}
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.pagination .current-page {
+    font-weight: bold;
+    color: #000;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+}
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center">Full Congress Members</h3>
+    <table class="table table-striped">
+        <thead class="thead-dark">
+            <tr>
+                <th>Full Name</th>
+                <th>Email</th>
+                <th>Institution</th>
+                <th>City</th>
+                <th>Country</th>
+                <th>Occupation</th>
+                <th>Membership</th>
+                <th>Price</th>
+                <th>Paid</th>
+                <th>Registered At</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in page_obj %}
+            <tr>
+                <td>{{ member.first_name }} {{ member.last_name }}</td>
+                <td>{{ member.email }}</td>
+                <td>{{ member.institution }}</td>
+                <td>{{ member.city }}</td>
+                <td>{{ member.get_country_display }}</td>
+                <td>{{ member.occupation }}</td>
+                <td>{{ member.membership }}</td>
+                <td>{{ member.fullcongress_price }}</td>
+                <td>{% if member.paid %}Yes{% else %}No{% endif %}</td>
+                <td>{{ member.created_at }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Pagination links -->
+    <div class="pagination">
+        {% if page_obj.has_previous %}
+            <a href="?page={{ page_obj.previous_page_number }}" class="btn btn-primary">previous</a>
+        {% endif %}
+        <span class="current-page btn btn-primary">{{ page_obj.number }}</span>
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}" class="btn btn-primary">next</a>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

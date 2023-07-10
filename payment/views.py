@@ -23,6 +23,8 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.contrib import messages
 from django.template.loader import render_to_string
 from django.core.mail import EmailMessage
+from fullcongress.models import *
+from precongress.models import *
 
 
 def generate_access_token():
@@ -43,48 +45,58 @@ def generate_access_token():
 
 SANDBOX_BASE_URL = "https://api-m.sandbox.paypal.com"
 PRODUCTION_BASE_URL = "https://api-m.paypal.com"
+BRAND_NAME = 'The African Genetic Biocontrol Consortium' 
 
 @csrf_exempt
 def create_paypal_order(request):
-    membership_reg = get_object_or_404(MembershipRegistration, user=request.user)
+    user = request.user
+    
+    if hasattr(user, 'membershipregistration'):
+        membership_reg = get_object_or_404(MembershipRegistration, user=user)
+    elif hasattr(user, 'fullcongressregistration'):
+        membership_reg = get_object_or_404(fullcongressRegistration, user=user)
+    elif hasattr(user, 'precongressregistration'):
+        membership_reg = get_object_or_404(PrecongressRegistration, user=user)
+    else:
+        return JsonResponse({'error': 'User has no registration'})
+
     access_token = generate_access_token()
     host = request.get_host()
     webhook_url = 'https://{}{}'.format(host, reverse('payment:paypal_webhook'))
     cancel_url = 'https://{}{}'.format(host, reverse('payment:payment_canceled'))
     url = f"{SANDBOX_BASE_URL}/v2/checkout/orders"
     payload = {
-    "intent": "CAPTURE",
-    "payer": {
-        "name": {
-            "given_name": membership_reg.first_name,
-            "surname": membership_reg.last_name
-        },
-        "email_address": membership_reg.email
-    },
-    "application_context": {
-        "brand_name": "The African Genetic Biocontrol Consortium",
-        "locale": "en-US",
-        "landing_page": "BILLING",
-        "user_action": "PAY_NOW",
-        "webhook_urls": [
-            {
-                "url": webhook_url
-            }
-        ],
-        "cancel_url": cancel_url
-    },
-    "purchase_units": [
-        {
-            "amount": {
-                "currency_code": "USD",
-                "value": str(membership_reg.membership_price)
+        "intent": "CAPTURE",
+        "payer": {
+            "name": {
+                "given_name": membership_reg.first_name,
+                "surname": membership_reg.last_name
             },
-            "reference_id": str(membership_reg.id),
-            "description": f"membership for {membership_reg.membership}",
-        }
-    ]
-}
-
+            "email_address": membership_reg.email
+        },
+        "application_context": {
+            "brand_name": "The African Genetic Biocontrol Consortium",
+            "locale": "en-US",
+            "landing_page": "BILLING",
+            "user_action": "PAY_NOW",
+            "webhook_urls": [
+                {
+                    "url": webhook_url
+                }
+            ],
+            "cancel_url": cancel_url
+        },
+        "purchase_units": [
+            {
+                "amount": {
+                    "currency_code": "USD",
+                    "value": str(membership_reg.membership_price)
+                },
+                "reference_id": str(membership_reg.id),
+                "description": f"membership for {membership_reg.membership}",
+            }
+        ]
+    }
 
     headers = {
         "Content-Type": "application/json",
@@ -93,9 +105,8 @@ def create_paypal_order(request):
     response = requests.post(url, json=payload, headers=headers)
     order = response.json()
     print(order)
-    
-    return JsonResponse(order)
 
+    return JsonResponse(order)
 
 
 @csrf_exempt
@@ -132,14 +143,24 @@ def paypal_webhook(request):
 
         # Retrieve the MembershipRegistration object
         reference_id = purchase_unit['reference_id']
-        membership_reg = MembershipRegistration.objects.get(id=reference_id)
+        registration_type = purchase_unit.get('registration_type')  # Get the registration type from the PayPal payload
+        if registration_type == 'membership':
+            registration = MembershipRegistration.objects.get(id=reference_id)
+        elif registration_type == 'fullcongress':
+            registration = fullcongressRegistration.objects.get(id=reference_id)
+        elif registration_type == 'precongress':
+            registration = PrecongressRegistration.objects.get(id=reference_id)
+        else:
+            return HttpResponse(status=400)
+        print(registration_type)
 
         amount = captures['amount']['value']  # Get the amount from PayPal response
         gross_pay = captures['seller_receivable_breakdown']['gross_amount']['value']  # Get the gross_pay from PayPal response
 
         payment = Payment.objects.create(
             user=request.user,
-            membership_registration=membership_reg,
+            registration_type=registration_type,  # Set the registration type field
+            membership_registration=registration,
             transaction_id=order_id,  # Set the transaction_id field
             amount=amount,
             timestamp=datetime.now(),
@@ -154,8 +175,8 @@ def paypal_webhook(request):
             payer_id=payer['payer_id']
         )
         # Mark the registration as paid
-        membership_reg.paid = True
-        membership_reg.save()
+        registration.paid = True
+        registration.save()
 
         # Send email notification
         mail_subject = '1ST GLOBAL CONGRESS ON EMERGING GENETIC BIOCONTROL TECHNOLOGIES'
@@ -168,11 +189,12 @@ def paypal_webhook(request):
 
         context = {'message': 'Payment completed successfully.'}
         return render(request, 'payment/payment_complete.html', context)
-    
+
     else:
         # Payment was not successful
         # Do something here, e.g. mark the order as failed in your system
         return HttpResponse(status=400)
+
 
 
 @login_required
@@ -187,9 +209,3 @@ def payment_done(request):
 def payment_canceled(request):
     return render(request, 'payment/payment_error.html')
 
-
-
-
-from django.shortcuts import render
-from django.http import HttpResponse
-from datetime import datetime

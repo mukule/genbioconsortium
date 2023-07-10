@@ -11,6 +11,8 @@ class MembershipCategory(models.Model):
     def __str__(self):
         return self.title
 
+from django.utils import timezone
+
 class MembershipRegistration(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     membership_category = models.ForeignKey(MembershipCategory, on_delete=models.CASCADE, null=True)
@@ -25,12 +27,15 @@ class MembershipRegistration(models.Model):
     email = models.EmailField()
     membership_price = models.DecimalField(max_digits=8, decimal_places=2)
     paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f"{self.membership} - {self.first_name} {self.last_name}"
 
+
 class Payment(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True)
+    registration_type = models.CharField(max_length=20, null=True)  # Allow null values for registration_type
     membership_registration = models.ForeignKey(MembershipRegistration, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100)
     amount = models.DecimalField(max_digits=8, decimal_places=2)

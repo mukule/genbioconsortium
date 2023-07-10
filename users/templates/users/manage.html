@@ -1,15 +1,41 @@
 {% extends 'users/base_admin.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+
 {% block content %}
-<div class="container">
+<style>
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.pagination a {
+    margin: 0 5px;
+    color: #333;
+    text-decoration: none;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.pagination .current-page {
+    font-weight: bold;
+    color: #000;
+    display: inline-block;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: #fff;
+}
+</style>
+
+<div class="container mt-5">
+    <h3 class="text-center">Genbioconsortium Registered Members</h3>
     <div class="row mt-5">
-        <div class="col text-center">
-            <h3 class="display-4">African Genetic Biocontrol Consortium Registered Users</h3>
-        </div>
-    </div>
-    <div class="row mt-5">
-        <div class="col">
+        <div class="col-md-8">
             <table class="table table-striped">
                 <thead class="thead-dark">
                     <tr>
@@ -20,16 +46,45 @@
                 </thead>
                 <tbody>
                     {% for user in users %}
-                    <tr>
-                        <td>{{ user.get_full_name }}</td>
-                        <td>{{ user.email }}</td>
-                        <td>{{ user.registered_at }}</td>
-                    </tr>
+                        <tr>
+                            <td>{{ user.get_full_name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.registered_at }}</td>
+                        </tr>
                     {% endfor %}
                 </tbody>
             </table>
+            <!-- Pagination links for registered members -->
+            <div class="pagination">
+                {% if users.has_previous %}
+                    <a href="?users_page={{ users.previous_page_number }}" class="btn btn-primary">previous</a>
+                {% endif %}
+                <span class="current-page btn btn-primary">{{ users.number }}</span>
+                {% if users.has_next %}
+                    <a href="?users_page={{ users.next_page_number }}" class="btn btn-primary">next</a>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card border-0">
+                <div class="card-header">Login Records</div>
+                <ul class="list-group list-group-flush">
+                    {% for record in login_records %}
+                        <li class="list-group-item">{{ record.user.username }} - {{ record.login_time }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <!-- Pagination links for login records -->
+            <div class="pagination">
+                {% if login_records.has_previous %}
+                    <a href="?login_records_page={{ login_records.previous_page_number }}" class="btn btn-primary">previous</a>
+                {% endif %}
+                <span class="current-page btn btn-primary">{{ login_records.number }}</span>
+                {% if login_records.has_next %}
+                    <a href="?login_records_page={{ login_records.next_page_number }}" class="btn btn-primary">next</a>
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>
-
 {% endblock content %}

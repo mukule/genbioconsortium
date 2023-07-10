@@ -29,7 +29,8 @@ from django.utils.html import strip_tags
 from .forms import UserLoginForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import user_passes_test
-from .models import CustomUser
+from .models import *
+from django.core.paginator import Paginator
 
 
 
@@ -240,4 +241,16 @@ def is_super_admin(user):
 @user_passes_test(is_super_admin, login_url='login', redirect_field_name=None)
 def manage(request):
     users = CustomUser.objects.all()
-    return render(request, 'users/manage.html', {'users': users})
+    login_records = UserLoginRecord.objects.all()
+
+    # Paginate the users
+    users_paginator = Paginator(users, 10)  # Display 10 users per page
+    users_page_number = request.GET.get('users_page')
+    users_page = users_paginator.get_page(users_page_number)
+
+    # Paginate the login records
+    login_records_paginator = Paginator(login_records, 10)  # Display 10 login records per page
+    login_records_page_number = request.GET.get('login_records_page')
+    login_records_page = login_records_paginator.get_page(login_records_page_number)
+
+    return render(request, 'users/manage.html', {'users': users_page, 'login_records': login_records_page})

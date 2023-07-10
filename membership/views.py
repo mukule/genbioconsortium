@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 from .models import MembershipRegistration
 from pyisemail import is_email
 import pycountry
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
 
 
 
@@ -68,6 +70,17 @@ def membership_registration(request, category_id):
     }
     return render(request, 'membership/member_reg.html', context)
 
+def is_superuser(user):
+    return user.is_superuser
+
+@login_required
+@user_passes_test(is_superuser)
+def congress_members(request):
+    members = MembershipRegistration.objects.all()
+    paginator = Paginator(members, 10)  # Set the number of items per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'membership/manage.html', {'page_obj': page_obj})
 
 
 

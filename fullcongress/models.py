@@ -12,6 +12,8 @@ class FullcongressCategory(models.Model):
     def __str__(self):
         return self.title
 
+from django.utils import timezone
+
 class fullcongressRegistration(models.Model):
     user = models.OneToOneField(CustomUser, on_delete=models.CASCADE)
     membership_category = models.ForeignKey(FullcongressCategory, on_delete=models.CASCADE, null=True)
@@ -26,6 +28,7 @@ class fullcongressRegistration(models.Model):
     email = models.EmailField()
     fullcongress_price = models.DecimalField(max_digits=8, decimal_places=2)
     paid = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return f"{self.precongress} - {self.first_name} {self.last_name}"
+        return f"{self.membership} - {self.first_name} {self.last_name}"

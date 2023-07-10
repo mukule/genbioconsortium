@@ -9,6 +9,7 @@ app_name = 'precongress'
 urlpatterns = [
     path('precongress_cat/', precongressCategory.as_view(), name='precongress_cat'),
     path('<int:category_id>/', views.membership_registration, name='membership_registration'),
+    path('precongress/users/', precongress_users, name='precongress_users'),
     # path('payment_method/', views.payment_method, name='payment_method'),
     
 ]

@@ -7,6 +7,8 @@ from django.contrib.auth.models import User
 # from .models import MembershipRegistration
 from pyisemail import is_email
 import pycountry
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.core.paginator import Paginator
 
 # Create your views here.
 class precongressCategory(ListView):
@@ -64,3 +66,18 @@ def membership_registration(request, category_id):
         'category': category
     }
     return render(request, 'precongress/member_reg.html', context)
+
+
+def is_superuser(user):
+    return user.is_superuser
+
+@login_required
+@user_passes_test(is_superuser)
+def precongress_users(request):
+    registrations = PrecongressRegistration.objects.all()
+
+    paginator = Paginator(registrations, 10)  # Display 10 registrations per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, 'precongress/manage.html', {'page_obj': page_obj})
