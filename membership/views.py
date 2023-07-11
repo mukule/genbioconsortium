@@ -4,7 +4,7 @@ from django.views.generic import ListView,DetailView,CreateView,UpdateView,Delet
 from .forms import MembershipRegistrationForm
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import MembershipRegistration
+from .models import *
 from pyisemail import is_email
 import pycountry
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -16,8 +16,31 @@ from django.core.paginator import Paginator
 # Create your views here.
 class membershipCategory(ListView):
     model = MembershipCategory
-    template_name = 'membership/member_cat.html'
+    template_name = 'membership/precongress_cat.html'
     context_object_name = 'categories'
+
+    def get_queryset(self):
+        # Get the registration type for Pre Conference
+        pre_conference_type = RegistrationType.objects.get(title='Pre Congress')
+
+        # Filter the membership categories by the Pre Conference registration type
+        queryset = MembershipCategory.objects.filter(registration_type=pre_conference_type)
+
+        return queryset
+
+class CongressCategory(ListView):
+    model = MembershipCategory
+    template_name = 'membership/congress_cat.html'
+    context_object_name = 'categories'
+
+    def get_queryset(self):
+        # Get the registration type for Pre Conference
+        conference = RegistrationType.objects.get(title='Congress')
+
+        # Filter the membership categories by the Pre Conference registration type
+        queryset = MembershipCategory.objects.filter(registration_type=conference)
+
+        return queryset
 
 
 def is_student_email(email):
@@ -96,3 +119,5 @@ def payment_method(request):
         return render(request, 'membership/payment_method.html', context)
     except MembershipRegistration.DoesNotExist:
         return redirect('membership:member_reg')
+    
+    

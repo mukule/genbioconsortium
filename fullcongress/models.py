@@ -29,6 +29,7 @@ class fullcongressRegistration(models.Model):
     fullcongress_price = models.DecimalField(max_digits=8, decimal_places=2)
     paid = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+    registration_type = models.CharField(max_length=30, default='full congress')
 
     def __str__(self):
         return f"{self.membership} - {self.first_name} {self.last_name}"
